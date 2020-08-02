@@ -15,8 +15,43 @@ limitations under the License.
 */
 package main
 
-import "github.com/gzcharleszhang/stego/cmd"
+import (
+	"fmt"
+	"github.com/gzcharleszhang/stego/pkg/stego-lsb"
+	"image"
+	"image/png"
+	"os"
+)
 
 func main() {
-	cmd.Execute()
+	reader, err := os.Open("./test/testdata/butterfly.png")
+	if reader != nil {
+		defer reader.Close()
+	}
+	if err != nil {
+		fmt.Printf("Error opening png file: %v\n", err)
+	}
+	image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
+	img, _, err := image.Decode(reader)
+	if err != nil {
+		fmt.Printf("Error decoding image: %v\n", err)
+	}
+	maxSize, _ := stego_lsb.MaxLSBEncodeSize(img)
+	fmt.Printf("Maximum encode size: %d bytes\n", maxSize)
+	outImg, err := stego_lsb.LSBEncode(img, "Hello, world!")
+	if err != nil {
+		fmt.Printf("Error encoding message: %v\n", err)
+	}
+	writer, err := os.Create("./test/testdata/butterfly-out.png")
+	if writer != nil {
+		defer writer.Close()
+		defer writer.Sync()
+	}
+	if err != nil {
+		fmt.Printf("Error creating png file: %v\n", err)
+	}
+	err = png.Encode(writer, outImg)
+	if err != nil {
+		fmt.Printf("Error encoding png image to file: %v\n", err)
+	}
 }
