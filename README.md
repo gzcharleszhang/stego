@@ -8,8 +8,8 @@ using the Least Significant Bit (LSB) steganography technique. Currently, Stego 
 but is able to hide any type of data and files.
 
 Stego achieves this by first prepending the size of the secret data to the data itself.
-It then overwrites each bit of the data
-into the least significant bit of the RGB values of each pixel
+It then writes each bit of the data
+to the least significant bit of each pixel's RGB values
 in the image. When Stego decodes an image, it collects each
 least significant bit of the image,
 then recompose the bits back into data. The first 8 LSB will tell
