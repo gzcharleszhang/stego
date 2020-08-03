@@ -6,7 +6,6 @@ import (
 	"github.com/gzcharleszhang/stego/utils"
 	"github.com/spf13/cobra"
 	"image"
-	"image/jpeg"
 	"image/png"
 	"os"
 	"strings"
@@ -47,8 +46,6 @@ func writeImage(img image.Image, format, originalPath, defaultOutputPrefix strin
 	}
 	if format == "png" {
 		err = png.Encode(writer, img)
-	} else if format == "jpeg" {
-		err = jpeg.Encode(writer, img, &jpeg.Options{Quality: 100})
 	}
 	if err != nil {
 		return fmt.Errorf("error encoding output image: %v", err)
