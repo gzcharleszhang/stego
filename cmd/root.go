@@ -29,7 +29,7 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "stego",
-	Short: "Embed secret messages in PNG images",
+	Short: "Embed secret messages in images",
 	Long: `
 Stego is a CLI library for Go that embeds secret data in images
 using the LSB steganography tecnique.`,

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"image/jpeg"
 	"image/png"
 	"os"
 	"strings"
@@ -16,12 +17,17 @@ func PathWithExtension(p string) (path string, extension string) {
 	return
 }
 
-func validateFormat(path string) error {
+func validateAndRegisterFormat(path string) error {
 	_, ext := PathWithExtension(path)
-	if ext != "png" {
-		return errors.New("unsupported image format, image must be in png")
+	if ext == "jpeg" || ext == "jpg" {
+		image.RegisterFormat("jpeg", "jpeg", jpeg.Decode, jpeg.DecodeConfig)
+		return nil
 	}
-	return nil
+	if ext == "png" {
+		image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
+		return nil
+	}
+	return errors.New("unsupported image format")
 }
 
 func GetImage(path string) (image.Image, error) {
@@ -30,13 +36,12 @@ func GetImage(path string) (image.Image, error) {
 		defer reader.Close()
 	}
 	if err != nil {
-		return nil, fmt.Errorf("error opening png file: %v\n", err)
+		return nil, fmt.Errorf("error opening image: %v\n", err)
 	}
-	err = validateFormat(path)
+	err = validateAndRegisterFormat(path)
 	if err != nil {
 		return nil, err
 	}
-	image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
 	img, _, err := image.Decode(reader)
 	if err != nil {
 		return nil, fmt.Errorf("Error decoding image: %v\n", err)

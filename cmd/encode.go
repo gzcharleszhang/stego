@@ -37,7 +37,7 @@ var (
 		Use:   "encode",
 		Short: "encodes message in an image",
 		Long: `
-Stego encode will embed your message in a PNG image.
+Stego encode will embed your message in an image.
 It breaks the message into bits and writes them to
 the least significant bit of each pixel's RGB channel
 in the image.'`,
