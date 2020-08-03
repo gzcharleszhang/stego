@@ -1,4 +1,4 @@
-package stego_lsb
+package stegolsb
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ func prependMessageSize(message *[]byte) {
 	// split messageSize into 4 bytes
 	mask := uint32(0xFF) // 00...0 1111 1111
 	for i := 0; i < 4; i++ {
-		shift := 24 - 8 * i
+		shift := 24 - 8*i
 		shifted := messageSize >> shift
 		messageSizeBytes[i] = byte(shifted & mask)
 	}
@@ -32,7 +32,7 @@ func processMessage(message string, ch chan byte) {
 	}
 }
 
-// encodes the message in the given image using the given number of bits per byte
+// Encode encodes the message in the given image using the given number of bits per byte
 // bitsPerByte: number of bits used to encode in a byte, must be within [1,8]
 func Encode(img image.Image, message string, bitsPerByte int) (image.Image, error) {
 	if bitsPerByte <= 0 || bitsPerByte > 8 {
@@ -62,7 +62,7 @@ func Encode(img image.Image, message string, bitsPerByte int) (image.Image, erro
 				for _, currByte := range rgbBytes {
 
 					// get the next bit in the message
-					bit, ok := <- nextMsgBitCh
+					bit, ok := <-nextMsgBitCh
 					if !ok {
 						// in case previous bytes were not set
 						rgba.SetRGBA(x, y, colour)
@@ -77,7 +77,7 @@ func Encode(img image.Image, message string, bitsPerByte int) (image.Image, erro
 	return rgba, nil
 }
 
-// encodes the message in the given image using LSB
+// LSBEncode encodes the message in the given image using LSB
 func LSBEncode(img image.Image, message string) (image.Image, error) {
 	return Encode(img, message, 1)
 }

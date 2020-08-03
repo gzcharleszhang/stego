@@ -1,4 +1,4 @@
-package stego_lsb
+package stegolsb
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -21,7 +21,7 @@ func TestGetBitInByte(t *testing.T) {
 }
 
 func TestSetBitInByte(t *testing.T) {
-	b := byte(0)// 0000 0000
+	b := byte(0) // 0000 0000
 	setBitInByte(&b, 1, 0)
 	assert.Equal(t, b, byte(0x80))
 	setBitInByte(&b, 0, 0)
@@ -46,7 +46,7 @@ func TestMaxEncodeSize(t *testing.T) {
 		t.Errorf("Error decoding image: %v\n", err)
 	}
 	// 3 bytes per pixel, 2 bits per byte, 4 bytes for metadata
-	expectedSize := uint32(img.Bounds().Dx() * img.Bounds().Dy() * 3 * 2 - 4)
+	expectedSize := uint32(img.Bounds().Dx()*img.Bounds().Dy()*3*2 - 4)
 	maxSize, err := MaxEncodeSize(img, 2)
 	assert.Equal(t, maxSize, expectedSize)
 	assert.Nil(t, err)
@@ -70,7 +70,7 @@ func TestMaxLSBEncodeSize(t *testing.T) {
 		t.Errorf("Error decoding image: %v\n", err)
 	}
 	// 3 bytes per pixel, 1 bit per byte, 4 bytes for metadata
-	expectedSize := uint32(img.Bounds().Dx() * img.Bounds().Dy() * 3 - 4)
+	expectedSize := uint32(img.Bounds().Dx()*img.Bounds().Dy()*3 - 4)
 	maxSize, _ := MaxEncodeSize(img, 1)
 	assert.Equal(t, maxSize, expectedSize)
 }

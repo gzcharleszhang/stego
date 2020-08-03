@@ -1,4 +1,4 @@
-package stego_lsb
+package stegolsb
 
 import (
 	"encoding/binary"
@@ -19,7 +19,7 @@ func bitsToByte(bits []byte) byte {
 // offset: the number of bytes to skip
 // length: the number of bytes to collect
 func getMessageFromImage(img *image.RGBA, offset uint32, length uint32) []byte {
-	counter, offsetBits, lengthBits := uint32(0), offset * 8, length * 8
+	counter, offsetBits, lengthBits := uint32(0), offset*8, length*8
 	var message []byte
 	var bits []byte
 	width, height := img.Bounds().Dx(), img.Bounds().Dy()
@@ -35,7 +35,7 @@ func getMessageFromImage(img *image.RGBA, offset uint32, length uint32) []byte {
 						counter++
 						continue
 					}
-					if counter >= lengthBits + offsetBits {
+					if counter >= lengthBits+offsetBits {
 						// terminate if we've collected enough bytes
 						return message
 					}
@@ -61,6 +61,7 @@ func getMessageSizeFromImage(img *image.RGBA) uint32 {
 	return binary.BigEndian.Uint32(messageSize)
 }
 
+// Decode tries to extract the hidden message from an image
 func Decode(img image.Image) (string, error) {
 	rgba := getRGBAFromImage(img)
 	messageBytes := getMessageSizeFromImage(rgba)

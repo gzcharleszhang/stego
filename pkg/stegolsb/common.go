@@ -1,4 +1,4 @@
-package stego_lsb
+package stegolsb
 
 import (
 	"fmt"
@@ -36,7 +36,7 @@ func setBitInByte(b *byte, bit byte, pos int) {
 	*b |= mask
 }
 
-// calculates the maximum size of the encoded message in the given image
+// MaxEncodeSize calculates the maximum size of the encoded message in the given image
 // when using the given number of bits per byte to encode
 // numEncodeBits: number of bits used to encode in a byte, must be within [1,8]
 func MaxEncodeSize(img image.Image, bitsPerByte int) (uint32, error) {
@@ -44,13 +44,13 @@ func MaxEncodeSize(img image.Image, bitsPerByte int) (uint32, error) {
 		return 0, fmt.Errorf("the number of bits used to encode per byte must be within [1,8]")
 	}
 	bytesPerPixel := 3 // 1 byte of red, green, and blue per pixel
-	metadataSize := 4 // int used to store the size of the encoded message
+	metadataSize := 4  // int used to store the size of the encoded message
 	numPixels := img.Bounds().Dx() * img.Bounds().Dy()
 	numBytes := numPixels * bytesPerPixel
-	return uint32(numBytes * bitsPerByte - metadataSize), nil
+	return uint32(numBytes*bitsPerByte - metadataSize), nil
 }
 
-// calculates the maximum size of the encoded message in the given image using LSB
+// MaxLSBEncodeSize calculates the maximum size of the encoded message in the given image using LSB
 func MaxLSBEncodeSize(img image.Image) (uint32, error) {
 	return MaxEncodeSize(img, 1)
 }

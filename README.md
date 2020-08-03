@@ -34,7 +34,7 @@ stego decode --image ./example.png
 ## Using Stego as a package
 ### Installation
 ```shell
-go get -u github.com/gzcharleszhang/stego/pkg/stego-lsb
+go get -u github.com/gzcharleszhang/stego/pkg/stegolsb
 ```
 
 ### Encoding
