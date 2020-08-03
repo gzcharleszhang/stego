@@ -1,4 +1,4 @@
-# Stego
+# Stego CLI
 
 ![build](https://github.com/gzcharleszhang/stego/workflows/Build/badge.svg)
 

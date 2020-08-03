@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gzcharleszhang/stego/cmd"
 	"github.com/gzcharleszhang/stego/pkg/stego-lsb"
 	"image"
 	"image/png"
@@ -62,5 +63,5 @@ func example() {
 }
 
 func main() {
-	example()
+	cmd.Execute()
 }

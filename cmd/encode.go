@@ -17,35 +17,77 @@ package cmd
 
 import (
 	"fmt"
-
+	stego_lsb "github.com/gzcharleszhang/stego/pkg/stego-lsb"
+	"github.com/gzcharleszhang/stego/utils"
 	"github.com/spf13/cobra"
+	"image"
+	"image/png"
+	"os"
+	"strings"
 )
 
-// encodeCmd represents the encode command
-var encodeCmd = &cobra.Command{
-	Use:   "encode",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+const DEFAULT_OUTPUT_PREFIX = "out"
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("encode called")
-	},
+// encodeCmd represents the encode command
+var (
+	imagePath string
+	outputPath string
+	message string
+	encodeCmd = &cobra.Command{
+		Use:   "encode",
+		Short: "encodes message in an image",
+		Long: `
+Stego encode will embed your message in a PNG image.
+It breaks the message into bits and writes them to
+the least significant bit of each pixel's RGB channel
+in the image.'`,
+		RunE: encode,
+	}
+)
+
+func writeImage(img image.Image) error {
+	if outputPath == "" {
+		path, ext := utils.PathWithExtension(outputPath)
+		outPath := strings.Join([]string{path, DEFAULT_OUTPUT_PREFIX}, "-")
+		outputPath = strings.Join([]string{outPath, ext}, ".")
+	}
+	writer, err := os.Create(outputPath)
+	if writer != nil {
+		defer writer.Close()
+		defer writer.Sync()
+	}
+	if err != nil {
+		return fmt.Errorf("Error creating output image: %v\n", err)
+	}
+	err = png.Encode(writer, img)
+	if err != nil {
+		return fmt.Errorf("Error encoding output image: %v\n", err)
+	}
+	return nil
+}
+
+func encode(cmd *cobra.Command, args []string) error {
+	img, err := utils.GetImage(imagePath)
+	if err != nil {
+		return err
+	}
+	outImg, err := stego_lsb.LSBEncode(img, message)
+	if err != nil {
+		return fmt.Errorf("Error encoding message: %v\n", err)
+	}
+	err = writeImage(outImg)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func init() {
 	rootCmd.AddCommand(encodeCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// encodeCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// encodeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	encodeCmd.Flags().StringVarP(&imagePath, "image", "i", "", "Path to the image")
+	encodeCmd.MarkFlagRequired("image")
+	encodeCmd.Flags().StringVarP(&message, "message", "m", "", "Message to be encoded")
+	encodeCmd.MarkFlagRequired("message")
+	encodeCmd.Flags().StringVarP(&outputPath, "output", "o", "", "Output path for the encoded image")
 }

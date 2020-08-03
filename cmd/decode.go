@@ -17,6 +17,8 @@ package cmd
 
 import (
 	"fmt"
+	stego_lsb "github.com/gzcharleszhang/stego/pkg/stego-lsb"
+	"github.com/gzcharleszhang/stego/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -31,21 +33,25 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("decode called")
-	},
+	RunE: run,
+}
+
+func run(cmd *cobra.Command, args []string) error {
+	img, err := utils.GetImage(imagePath)
+	if err != nil {
+		return err
+	}
+	message, err := stego_lsb.Decode(img)
+	if err != nil {
+		return fmt.Errorf("Error decoding image: %v\n", err)
+	}
+	cmd.Println(message)
+	return nil
 }
 
 func init() {
 	rootCmd.AddCommand(decodeCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// decodeCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// decodeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	decodeCmd.Flags().StringVarP(&imagePath, "image", "i", "", "Path to the image")
+	decodeCmd.MarkFlagRequired("image")
 }

@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/go,jetbrains,windows,macos,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=go,jetbrains,windows,macos,linux
 
+# Ignore output images in testdata
+test/**/*-out.*
+
 ### Go ###
 # Binaries for programs and plugins
 *.exe
