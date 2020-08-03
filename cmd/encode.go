@@ -47,7 +47,7 @@ in the image.'`,
 
 func writeImage(img image.Image) error {
 	if outputPath == "" {
-		path, ext := utils.PathWithExtension(outputPath)
+		path, ext := utils.PathWithExtension(imagePath)
 		outPath := strings.Join([]string{path, DEFAULT_OUTPUT_PREFIX}, "-")
 		outputPath = strings.Join([]string{outPath, ext}, ".")
 	}
