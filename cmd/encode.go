@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	stego_lsb "github.com/gzcharleszhang/stego/pkg/stegolsb"
+	"github.com/gzcharleszhang/stego/pkg/stegolsb"
 	"github.com/gzcharleszhang/stego/utils"
 	"github.com/spf13/cobra"
 	"image"
@@ -61,7 +61,7 @@ func encode(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	outImg, err := stego_lsb.LSBEncode(img, message)
+	outImg, err := stegolsb.LSBEncode(img, message)
 	if err != nil {
 		return fmt.Errorf("error encoding message: %v", err)
 	}

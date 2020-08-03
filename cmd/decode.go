@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	stegolsb "github.com/gzcharleszhang/stego/pkg/stegolsb"
+	"github.com/gzcharleszhang/stego/pkg/stegolsb"
 	"github.com/gzcharleszhang/stego/utils"
 
 	"github.com/spf13/cobra"
