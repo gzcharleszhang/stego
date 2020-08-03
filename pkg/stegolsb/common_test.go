@@ -52,7 +52,7 @@ func TestMaxEncodeSize(t *testing.T) {
 	assert.Nil(t, err)
 
 	// test error handling
-	maxSize, err = MaxEncodeSize(img, 9)
+	_, err = MaxEncodeSize(img, 9)
 	assert.NotNil(t, err)
 }
 
