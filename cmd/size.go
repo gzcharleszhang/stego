@@ -12,6 +12,7 @@ import (
 // sizeCmd represents the size command
 var (
 	sizePrettyPrint bool
+	sizeBits        int
 	sizeCmd         = &cobra.Command{
 		Use:   "size",
 		Short: "Maximum encoding size of an image",
@@ -46,7 +47,10 @@ func runSize(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	size, err := stegolsb.MaxLSBEncodeSize(img)
+	size, err := stegolsb.MaxEncodeSize(img, sizeBits)
+	if err != nil {
+		return err
+	}
 	if sizePrettyPrint {
 		cmd.Println(prettyBytes(size))
 	} else {
@@ -58,4 +62,5 @@ func runSize(cmd *cobra.Command, args []string) error {
 func init() {
 	rootCmd.AddCommand(sizeCmd)
 	sizeCmd.Flags().BoolVarP(&sizePrettyPrint, "pretty", "p", false, "Pretty print the maximum encoding size")
+	sizeCmd.Flags().IntVarP(&sizeBits, "bits", "b", 1, "Number of bits per byte used for encoding")
 }
