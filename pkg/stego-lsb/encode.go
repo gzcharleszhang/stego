@@ -14,6 +14,7 @@ func getRGBAFromImage(img image.Image) *image.RGBA {
 	return rgba
 }
 
+// prepend the size of the message to the message
 func prependMessageSize(message *[]byte) {
 	messageSize := uint32(len(*message))
 	messageSizeBytes := make([]byte, 4)

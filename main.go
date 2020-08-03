@@ -23,7 +23,7 @@ import (
 	"os"
 )
 
-func main() {
+func example() {
 	reader, err := os.Open("./test/testdata/butterfly.png")
 	if reader != nil {
 		defer reader.Close()
@@ -54,4 +54,13 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error encoding png image to file: %v\n", err)
 	}
+	message, err := stego_lsb.Decode(outImg)
+	if err != nil {
+		fmt.Printf("Error decoding image: %v\n", err)
+	}
+	fmt.Println(message)
+}
+
+func main() {
+	example()
 }

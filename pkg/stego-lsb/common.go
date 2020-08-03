@@ -16,6 +16,7 @@ func getBitInByte(b byte, pos int) byte {
 	return 1
 }
 
+// set the bit at pos to the given value in the given byte
 func setBitInByte(b *byte, bit byte, pos int) {
 	// clear the bit at pos
 	longMask := 0xFF7F // 1111 1111 0111 1111
