@@ -17,6 +17,7 @@ const defaultOutputPrefix = "out"
 var (
 	encodeOutputPath string
 	encodeData       string
+	encodeBits       int
 	encodeCmd        = &cobra.Command{
 		Use:   "encode",
 		Short: "encodes data in an image",
@@ -59,7 +60,7 @@ func encode(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	outImg, err := stegolsb.LSBEncode(img, encodeData)
+	outImg, err := stegolsb.Encode(img, encodeData, encodeBits)
 	if err != nil {
 		return fmt.Errorf("error encoding message: %v", err)
 	}
@@ -72,8 +73,8 @@ func encode(cmd *cobra.Command, args []string) error {
 
 func init() {
 	rootCmd.AddCommand(encodeCmd)
-
 	encodeCmd.Flags().StringVarP(&encodeData, "data", "d", "", "Data to be encoded")
-	encodeCmd.MarkFlagRequired("message")
+	encodeCmd.MarkFlagRequired("data")
 	encodeCmd.Flags().StringVarP(&encodeOutputPath, "output", "o", "", "Output path for the encoded image")
+	encodeCmd.Flags().IntVarP(&encodeBits, "bits", "b", 1, "Number of bits per byte used for encoding")
 }

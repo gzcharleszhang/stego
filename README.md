@@ -24,7 +24,7 @@ $ go get -u github.com/gzcharleszhang/stego
 
 ## Usage
 
-### Encoding a message in an image
+### Encoding data in an image
 ```shell
 $ stego encode ./stego/example.png --data "Stego is a steganography CLI tool."
 ```
@@ -36,9 +36,21 @@ To specify an output path, use the `--out` or `-o` flag
 $ stego encode ./stego/example.png -d "Stego is a steganography CLI tool." -o ./out/example.png
 ```
 
-### Decoding a message from an image
+Use the `--bits` or `-b` flag to specify the number
+of bits in a byte used for encoding.
+
+For example, this will tell Stego to use up to 2 bits per byte.
+If Stego already used all of the least significant bits in an image
+but there is still more data to encode, then Stego will
+encode using the second least significant bit.
+```shell
+$ stego encode ./stego/example.png -d "Stego is a steganography CLI tool." -b 2
+```
+
+### Decoding data from an image
 ```shell
 $ stego decode ./example.png
+Stego is a steganography CLI tool.
 ```
 
 ### Checking the maximum encoding size of an image
@@ -50,6 +62,13 @@ maximum encoding size of an image in bytes.
 ```shell
 $ stego size ./example.png
 1179644
+```
+
+Use the `--bits` or `-b` flag to specify the number
+of bits in a byte used for encoding.
+```shell
+$ stego size ./example.png -b 2
+2359292
 ```
 
 Pretty print using the `--pretty` or `-p` flag.
@@ -65,7 +84,7 @@ $ go get -u github.com/gzcharleszhang/stego/pkg/stegolsb
 ```
 
 ### Encoding
-Stego can encode a message into an image from the [Go image package](https://golang.org/pkg/image/)
+Stego can encode data into an image from the [Go image package](https://golang.org/pkg/image/)
 
 ```go
 import (
@@ -76,7 +95,7 @@ import (
 
 outImg, err := stego_lsb.LSBEncode(img, "Hello, world!")
 if err != nil {
-    fmt.Printf("Error encoding message: %v\n", err)
+    fmt.Printf("Error encoding data: %v\n", err)
 }
 ```
 
@@ -92,7 +111,7 @@ Encoding an image using up to 2 bit per byte
 ```go
 outImg, err := stego_lsb.Encode(img, "Hello, world!", 2)
 if err != nil {
-    fmt.Printf("Error encoding message: %v\n", err)
+    fmt.Printf("Error encoding data: %v\n", err)
 }
 ```
 
@@ -100,13 +119,13 @@ if err != nil {
 Stego attempts to decode an [image](https://golang.org/pkg/image/)
 and prints the hidden data.
 ```go
-message, err := stego_lsb.Decode(img)
+data, err := stego_lsb.Decode(img)
 if err != nil {
     fmt.Printf("Error decoding image: %v\n", err)
 }
 ```
 
-### Maximum message size for encoding
+### Maximum encoding size
 Stego can calculate the maximum number of bytes available for
 encoding in an image.
 
