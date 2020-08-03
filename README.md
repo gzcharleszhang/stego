@@ -4,7 +4,8 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/gzcharleszhang/stego)](https://goreportcard.com/report/github.com/gzcharleszhang/stego)
 
 Stego is a command-line interface for encoding and decoding secret data in images,
-using the Least Significant Bit (LSB) steganography technique. Currently, Stego only supports PNG images.
+using the Least Significant Bit (LSB) steganography technique. Currently, Stego only supports PNG images,
+but is able to hide any type of data and files.
 
 Stego is also available as a Go [package](#Using-Stego-as-a-package).
 
@@ -17,19 +18,19 @@ go get -u github.com/gzcharleszhang/stego
 
 ### Encoding a message in an image
 ```shell
-stego encode --image ./stego/example.png --message "Stego is a steganography CLI tool."
+stego encode ./stego/example.png --data "Stego is a steganography CLI tool."
 ```
 By default, Stego will add a `-out` suffix to the output image. For example, the above encoded image
 can be found at `./stego/example-out.png`
 
 To specify an output path, use the `--out` or `-o` flag
 ```shell
-stego encode -i ./stego/example.png -m "Stego is a steganography CLI tool." -o ./out/example.png
+stego encode ./stego/example.png -d "Stego is a steganography CLI tool." -o ./out/example.png
 ```
 
 ### Decoding a message from an image
 ```shell
-stego decode --image ./example.png
+stego decode ./example.png
 ```
 
 ## Using Stego as a package

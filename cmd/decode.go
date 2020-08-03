@@ -18,10 +18,12 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
+	Args: cobra.ExactArgs(1),
 	RunE: run,
 }
 
 func run(cmd *cobra.Command, args []string) error {
+	imagePath := args[0]
 	img, _, err := utils.GetImage(imagePath)
 	if err != nil {
 		return err
@@ -36,7 +38,4 @@ func run(cmd *cobra.Command, args []string) error {
 
 func init() {
 	rootCmd.AddCommand(decodeCmd)
-
-	decodeCmd.Flags().StringVarP(&imagePath, "image", "i", "", "Path to the image")
-	decodeCmd.MarkFlagRequired("image")
 }

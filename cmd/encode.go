@@ -16,28 +16,28 @@ const defaultOutputPrefix = "out"
 
 // encodeCmd represents the encode command
 var (
-	imagePath  string
-	outputPath string
-	message    string
-	encodeCmd  = &cobra.Command{
+	encodeOutputPath string
+	encodeData       string
+	encodeCmd        = &cobra.Command{
 		Use:   "encode",
 		Short: "encodes message in an image",
 		Long: `
-Stego encode will embed your message in an image.
-It breaks the message into bits and writes them to
+Stego encode will embed your data in an image.
+It breaks the data into bits and writes them to
 the least significant bit of each pixel's RGB channel
 in the image.'`,
+		Args: cobra.ExactArgs(1),
 		RunE: encode,
 	}
 )
 
-func writeImage(img image.Image, format string) error {
-	if outputPath == "" {
-		path, ext := utils.PathWithExtension(imagePath)
-		outPath := strings.Join([]string{path, defaultOutputPrefix}, "-")
-		outputPath = strings.Join([]string{outPath, ext}, ".")
+func writeImage(img image.Image, format, originalPath, defaultOutputPrefix string) error {
+	if encodeOutputPath == "" {
+		originalPathName, ext := utils.PathWithExtension(originalPath)
+		outPath := strings.Join([]string{originalPathName, defaultOutputPrefix}, "-")
+		encodeOutputPath = strings.Join([]string{outPath, ext}, ".")
 	}
-	writer, err := os.Create(outputPath)
+	writer, err := os.Create(encodeOutputPath)
 	if writer != nil {
 		defer writer.Close()
 		defer writer.Sync()
@@ -57,15 +57,16 @@ func writeImage(img image.Image, format string) error {
 }
 
 func encode(cmd *cobra.Command, args []string) error {
+	imagePath := args[0]
 	img, format, err := utils.GetImage(imagePath)
 	if err != nil {
 		return err
 	}
-	outImg, err := stegolsb.LSBEncode(img, message)
+	outImg, err := stegolsb.LSBEncode(img, encodeData)
 	if err != nil {
 		return fmt.Errorf("error encoding message: %v", err)
 	}
-	err = writeImage(outImg, format)
+	err = writeImage(outImg, format, imagePath, defaultOutputPrefix)
 	if err != nil {
 		return err
 	}
@@ -75,9 +76,7 @@ func encode(cmd *cobra.Command, args []string) error {
 func init() {
 	rootCmd.AddCommand(encodeCmd)
 
-	encodeCmd.Flags().StringVarP(&imagePath, "image", "i", "", "Path to the image")
-	encodeCmd.MarkFlagRequired("image")
-	encodeCmd.Flags().StringVarP(&message, "message", "m", "", "Message to be encoded")
+	encodeCmd.Flags().StringVarP(&encodeData, "data", "d", "", "Data to be encoded")
 	encodeCmd.MarkFlagRequired("message")
-	encodeCmd.Flags().StringVarP(&outputPath, "output", "o", "", "Output path for the encoded image")
+	encodeCmd.Flags().StringVarP(&encodeOutputPath, "output", "o", "", "Output path for the encoded image")
 }
