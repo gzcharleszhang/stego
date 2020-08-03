@@ -49,7 +49,7 @@ if err != nil {
 
 #### Encoding with more than 1 bit
 The package also supports encoding with multiple bits per byte.
-This allows the image to encode more data, however it will make
+This allows the image to encode more data, however it will decrease
 the encoded image quality compared to the original image.
 
 Stego will first use the least significant bit, then the second
