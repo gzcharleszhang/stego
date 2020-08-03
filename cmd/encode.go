@@ -19,12 +19,12 @@ var (
 	encodeData       string
 	encodeCmd        = &cobra.Command{
 		Use:   "encode",
-		Short: "encodes message in an image",
+		Short: "encodes data in an image",
 		Long: `
 Stego encode will embed your data in an image.
 It breaks the data into bits and writes them to
 the least significant bit of each pixel's RGB channel
-in the image.'`,
+in the image.`,
 		Args: cobra.ExactArgs(1),
 		RunE: encode,
 	}

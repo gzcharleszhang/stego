@@ -11,38 +11,61 @@ Stego is also available as a Go [package](#Using-Stego-as-a-package).
 
 ## Getting Started
 ```shell
-go get -u github.com/gzcharleszhang/stego
+$ go get -u github.com/gzcharleszhang/stego
 ```
 
 ## Usage
 
 ### Encoding a message in an image
 ```shell
-stego encode ./stego/example.png --data "Stego is a steganography CLI tool."
+$ stego encode ./stego/example.png --data "Stego is a steganography CLI tool."
 ```
 By default, Stego will add a `-out` suffix to the output image. For example, the above encoded image
 can be found at `./stego/example-out.png`
 
 To specify an output path, use the `--out` or `-o` flag
 ```shell
-stego encode ./stego/example.png -d "Stego is a steganography CLI tool." -o ./out/example.png
+$ stego encode ./stego/example.png -d "Stego is a steganography CLI tool." -o ./out/example.png
 ```
 
 ### Decoding a message from an image
 ```shell
-stego decode ./example.png
+$ stego decode ./example.png
+```
+
+### Checking the maximum encoding size of an image
+Before encoding data in an image, you may want to know
+how much hidden data an image can hold.
+
+Stego has a `size` command that calculates the
+maximum encoding size of an image in bytes.
+```shell
+$ stego size ./example.png
+1179644
+```
+
+Pretty print using the `--pretty` or `-p` flag.
+```shell
+$ stego size --pretty ./example.png
+1.12 MB
 ```
 
 ## Using Stego as a package
-### Installation
+### Package-only installation
 ```shell
-go get -u github.com/gzcharleszhang/stego/pkg/stegolsb
+$ go get -u github.com/gzcharleszhang/stego/pkg/stegolsb
 ```
 
 ### Encoding
 Stego can encode a message into an image from the [Go image package](https://golang.org/pkg/image/)
 
 ```go
+import (
+    "fmt"
+    "github.com/gzcharleszhang/stego/pkg/stegolsb"
+    "image"
+)
+
 outImg, err := stego_lsb.LSBEncode(img, "Hello, world!")
 if err != nil {
     fmt.Printf("Error encoding message: %v\n", err)

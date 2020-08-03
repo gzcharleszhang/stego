@@ -11,13 +11,14 @@ import (
 // decodeCmd represents the decode command
 var decodeCmd = &cobra.Command{
 	Use:   "decode",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "decodes data in an image",
+	Long: `
+Stego decode attempts to retrieve the hidden data in an image.
+Decode looks at the least significant bit of each of the RGB channels
+in each pixel of the image, and collects those bits to recompose
+the data. Decode treats the first 8 bits of the data as the total size
+of the hidden data. Decode looks at more significant bits after
+going through the least significant bits.`,
 	Args: cobra.ExactArgs(1),
 	RunE: run,
 }
