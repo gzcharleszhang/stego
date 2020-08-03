@@ -21,6 +21,7 @@ import (
 	"github.com/gzcharleszhang/stego/utils"
 	"github.com/spf13/cobra"
 	"image"
+	"image/jpeg"
 	"image/png"
 	"os"
 	"strings"
@@ -45,7 +46,7 @@ in the image.'`,
 	}
 )
 
-func writeImage(img image.Image) error {
+func writeImage(img image.Image, format string) error {
 	if outputPath == "" {
 		path, ext := utils.PathWithExtension(imagePath)
 		outPath := strings.Join([]string{path, DEFAULT_OUTPUT_PREFIX}, "-")
@@ -59,7 +60,11 @@ func writeImage(img image.Image) error {
 	if err != nil {
 		return fmt.Errorf("Error creating output image: %v\n", err)
 	}
-	err = png.Encode(writer, img)
+	if format == "png" {
+		err = png.Encode(writer, img)
+	} else if format == "jpeg" {
+		err = jpeg.Encode(writer, img, &jpeg.Options{Quality: 100})
+	}
 	if err != nil {
 		return fmt.Errorf("Error encoding output image: %v\n", err)
 	}
@@ -67,7 +72,7 @@ func writeImage(img image.Image) error {
 }
 
 func encode(cmd *cobra.Command, args []string) error {
-	img, err := utils.GetImage(imagePath)
+	img, format, err := utils.GetImage(imagePath)
 	if err != nil {
 		return err
 	}
@@ -75,7 +80,7 @@ func encode(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("Error encoding message: %v\n", err)
 	}
-	err = writeImage(outImg)
+	err = writeImage(outImg, format)
 	if err != nil {
 		return err
 	}

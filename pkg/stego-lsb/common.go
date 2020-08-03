@@ -3,7 +3,16 @@ package stego_lsb
 import (
 	"fmt"
 	"image"
+	"image/draw"
 )
+
+// constructs a RGBA image from the image
+func getRGBAFromImage(img image.Image) *image.RGBA {
+	rect := img.Bounds()
+	rgba := image.NewRGBA(rect)
+	draw.Draw(rgba, rect, img, rect.Min, draw.Src)
+	return rgba
+}
 
 // returns the bit at pos in the given byte
 func getBitInByte(b byte, pos int) byte {

@@ -37,7 +37,7 @@ to quickly create a Cobra application.`,
 }
 
 func run(cmd *cobra.Command, args []string) error {
-	img, err := utils.GetImage(imagePath)
+	img, _, err := utils.GetImage(imagePath)
 	if err != nil {
 		return err
 	}

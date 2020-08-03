@@ -3,7 +3,7 @@
 ![build](https://github.com/gzcharleszhang/stego/workflows/Build/badge.svg)
 
 Stego is a command-line interface for encoding and decoding secret data in images,
-using the Least Significant Bit (LSB) steganography technique. Currently, Stego supports PNG and JPEG images.
+using the Least Significant Bit (LSB) steganography technique. Currently, Stego only supports PNG images.
 
 Stego is also available as a Go [package](#Using-Stego-as-a-package).
 

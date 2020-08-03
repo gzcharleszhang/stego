@@ -3,16 +3,7 @@ package stego_lsb
 import (
 	"fmt"
 	"image"
-	"image/draw"
 )
-
-// constructs a RGBA image from the image
-func getRGBAFromImage(img image.Image) *image.RGBA {
-	rect := img.Bounds()
-	rgba := image.NewRGBA(rect)
-	draw.Draw(rgba, rect, img, rect.Min, draw.Src)
-	return rgba
-}
 
 // prepend the size of the message to the message
 func prependMessageSize(message *[]byte) {

@@ -2,7 +2,6 @@ package stego_lsb
 
 import (
 	"encoding/binary"
-	"fmt"
 	"image"
 )
 
@@ -63,10 +62,7 @@ func getMessageSizeFromImage(img *image.RGBA) uint32 {
 }
 
 func Decode(img image.Image) (string, error) {
-	rgba, ok := img.(*image.RGBA)
-	if !ok {
-		return "", fmt.Errorf("cannot convert to RGBA image")
-	}
+	rgba := getRGBAFromImage(img)
 	messageBytes := getMessageSizeFromImage(rgba)
 	// offset the 32-bit message size
 	message := getMessageFromImage(rgba, 4, messageBytes)
