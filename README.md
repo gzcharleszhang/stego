@@ -7,6 +7,14 @@ Stego is a command-line interface for encoding and decoding secret data in image
 using the Least Significant Bit (LSB) steganography technique. Currently, Stego only supports PNG images,
 but is able to hide any type of data and files.
 
+Stego achieves this by first prepending the size of the secret data to the data itself.
+It then overwrites each bit of the data
+into the least significant bit of the RGB channels of each pixel
+in the image. When Stego decodes an image, it collects each
+least significant bit of the image,
+then recompose the bits back into data. The first 8 LSB will tell
+Stego the total size of the hidden data.
+
 Stego is also available as a Go [package](#Using-Stego-as-a-package).
 
 ## Getting Started
@@ -89,10 +97,10 @@ if err != nil {
 ```
 
 ### Decoding
-Stego can attempt to decode an image from the [Go image package](https://golang.org/pkg/image/)
-
+Stego attempts to decode an [image](https://golang.org/pkg/image/)
+and prints the hidden data.
 ```go
-message, err := stego_lsb.Decode(outImg)
+message, err := stego_lsb.Decode(img)
 if err != nil {
     fmt.Printf("Error decoding image: %v\n", err)
 }
