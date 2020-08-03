@@ -15,12 +15,11 @@ go get -u github.com/gzcharleszhang/stego
 ## Usage
 
 ### Encoding a message in an image
-By default, Stego will add a `-out` suffix to the output image.
-
-The encoded image can be found at `./stego/example-out.png`
 ```shell
 stego encode --image ./stego/example.png --message "Stego is a steganography CLI tool."
 ```
+By default, Stego will add a `-out` suffix to the output image. For example, the above encoded image
+can be found at `./stego/example-out.png`
 
 To specify an output path, use the `--out` or `-o` flag
 ```shell
