@@ -19,6 +19,8 @@ import (
 	"github.com/gzcharleszhang/stego/cmd"
 )
 
+var executeCmd = cmd.Execute
+
 func main() {
-	cmd.Execute()
+	executeCmd()
 }
