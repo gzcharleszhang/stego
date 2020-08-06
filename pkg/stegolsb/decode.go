@@ -8,8 +8,9 @@ import (
 func bitsToByte(bits []byte) byte {
 	b := byte(0)
 	for i, bit := range bits {
-		shift := 7 - i
-		bit <<= shift
+		if i > 0 {
+			b <<= 1
+		}
 		b |= bit
 	}
 	return b
