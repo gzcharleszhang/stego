@@ -6,11 +6,13 @@ import (
 )
 
 func bitsToByte(bits []byte) byte {
-	b := byte(0)
-	for i, bit := range bits {
-		shift := 7 - i
-		bit <<= shift
-		b |= bit
+	if len(bits) == 0 {
+		return byte(0)
+	}
+	b := byte(bits[0])
+	for i := 1; i < len(bits); i++ {
+		b <<= 1
+		b |= bits[i]
 	}
 	return b
 }

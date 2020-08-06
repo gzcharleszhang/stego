@@ -1,12 +1,26 @@
 package stegolsb
 
 import (
+	"github.com/gzcharleszhang/stego/utils"
 	"github.com/stretchr/testify/assert"
 	"image"
+	"image/draw"
 	"image/png"
 	"os"
 	"testing"
 )
+
+var TestImagePath = "../../test/testdata/butterfly.png"
+
+func TestGetRGBAFromImage(t *testing.T) {
+	img, _, err := utils.GetImage(TestImagePath)
+	assert.NotNil(t, img)
+	assert.Nil(t, err)
+	rect := img.Bounds()
+	rgba := image.NewRGBA(rect)
+	draw.Draw(rgba, rect, img, rect.Min, draw.Src)
+	assert.Equal(t, rgba, getRGBAFromImage(img))
+}
 
 func TestGetBitInByte(t *testing.T) {
 	b := byte(0x80) // 1000 0000
@@ -33,7 +47,7 @@ func TestSetBitInByte(t *testing.T) {
 }
 
 func TestMaxEncodeSize(t *testing.T) {
-	reader, err := os.Open("../../test/testdata/butterfly.png")
+	reader, err := os.Open(TestImagePath)
 	if reader != nil {
 		defer reader.Close()
 	}
@@ -57,7 +71,7 @@ func TestMaxEncodeSize(t *testing.T) {
 }
 
 func TestMaxLSBEncodeSize(t *testing.T) {
-	reader, err := os.Open("../../test/testdata/butterfly.png")
+	reader, err := os.Open(TestImagePath)
 	if reader != nil {
 		defer reader.Close()
 	}
