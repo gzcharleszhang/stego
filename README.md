@@ -91,11 +91,20 @@ import (
     "fmt"
     "github.com/gzcharleszhang/stego/pkg/stegolsb"
     "image"
+	"image/png"
+	"os"
 )
 
-outImg, err := stego_lsb.LSBEncode(img, "Hello, world!")
-if err != nil {
-    fmt.Printf("Error encoding data: %v\n", err)
+func main() {
+    // read image from file
+    file, _ := os.Open("/path/to/image")
+    img, _, _ := image.Decode(file)
+ 
+    // encode data using Stego
+    outImg, err := stego_lsb.LSBEncode(img, "Hello, world!")
+    if err != nil {
+        fmt.Printf("Error encoding data: %v\n", err)
+    }
 }
 ```
 
